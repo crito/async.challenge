@@ -8,7 +8,7 @@ server  = require('http').createServer(app)
 app.configure ->
   app.set('port', process.env.PORT or 5000)
   app.use(express.favicon())
-  app.use(express.logger('dev'))
+  app.use(express.logger('short'))
   app.use(express.bodyParser())
   app.use(express.methodOverride())
   app.use(app.router)
