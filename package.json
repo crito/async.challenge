@@ -30,7 +30,8 @@
   },
   "homepage": "https://github.com/crito/repository",
   "dependencies": {
-    "coffee-script": "~1.6.3"
+    "coffee-script": "~1.6.3",
+    "node-config": "0.0.2"
   },
   "devDependencies": {
     "projectz": "~0.2.6",
