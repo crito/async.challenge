@@ -1,4 +1,4 @@
-posts = require('./posts')
+users = require('./users')
 
 module.exports = (app) ->
-  app.get('/posts', posts.show)
+  app.get('/users/:id', users.show)

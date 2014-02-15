@@ -1,46 +1,44 @@
 {
-  "title": "JS Scaffolding",
-  "name": "js.scaffold",
+  "title": "Challenges",
+  "name": "challenges",
   "version": "0.0.1",
-  "description": "A JavaScript based project.",
-  "main": "./dist/lib.js",
-  "scripts": {
-    "test": "cake test"
-  },
-  "badges": {
-    "travis": true,
-    "npm": true,
-    "gittip": "crito"
-  },
+  "description": "Some challenges",
   "repository": {
     "type": "git",
-    "url": "https://github.com/crito/repository"
+    "url": "https://github.com/crito/unlockyourbrain"
   },
   "engines": {
     "node": ">=0.8",
     "npm": ">=1.2"
   },
   "keywords": [],
-  "author": "2013+ Christo Buschek <crito@cryptodrunks.net>",
+  "author": "2014+ Christo Buschek <crito@cryptodrunks.net>",
   "license": {
     "type": "MIT"
   },
   "bugs": {
-    "url": "https://github.com/crito/repository/issues"
+    "url": "https://github.com/crito/unlockyourbrain/issues"
   },
-  "homepage": "https://github.com/crito/repository",
+  "homepage": "https://github.com/crito/unlockyourbrain",
   "dependencies": {
     "coffee-script": "~1.6.3",
-    "node-config": "0.0.2"
+    "node-config": "0.0.2",
+    "express": "~3.4.8"
   },
   "devDependencies": {
-    "projectz": "~0.2.6",
-    "docco": "~0.6.2"
+    "expect.js": "~0.2.0",
+    "mocha": "~1.17.1",
+    "sinon": "~1.8.2",
+    "supertest": "~0.9.0"
   },
   "maintainers": [
-    "Christo Buschek <crito@cryptodrunks.net (https://crito.github.io)"
+    "Christo Buschek <crito@cryptodrunks.net> (https://crito.github.io)"
   ],
   "contributors": [
-    "Christo Buschek <crito@cryptodrunks.net (https://crito.github.io)"
-  ]
+    "Christo Buschek <crito@cryptodrunks.net> (https://crito.github.io)"
+  ],
+  "scripts": {
+    "test": "node_modules/.bin/cake test",
+    "start": "node_modules/.bin/cake server"
+  }
 }

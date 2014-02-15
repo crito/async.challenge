@@ -16,8 +16,6 @@ EXT           = (if WINDOWS then '.cmd' else '')
 APP_DIR       = process.cwd()
 PACKAGE_PATH  = pathUtil.join(APP_DIR, "package.json")
 PACKAGE_DATA  = require(PACKAGE_PATH)
-DOCS_DIR      = pathUtil.join(APP_DIR, "docs")
-DOCS_INPUT    = pathUtil.join(APP_DIR, "src", "*")
 SRC_DIR       = pathUtil.join(APP_DIR, "src")
 OUT_DIR       = pathUtil.join(APP_DIR, "dist")
 TEST_DIR      = pathUtil.join(APP_DIR, "test")
@@ -26,8 +24,7 @@ BIN_DIR       = pathUtil.join(MODULES_DIR, ".bin")
 GIT           = "git"
 CAKE          = pathUtil.join(BIN_DIR, "cake#{EXT}")
 COFFEE        = pathUtil.join(BIN_DIR, "coffee#{EXT}")
-PROJECTZ      = pathUtil.join(BIN_DIR, "projectz#{EXT}")
-DOCCO         = pathUtil.join(BIN_DIR, "docco#{EXT}")
+MOCHA         = pathUtil.join(BIN_DIR, "mocha#{EXT}")
 
 # =====================================
 # Generic
@@ -46,7 +43,6 @@ safe = (next,fn) ->
 
     # Error
     return next(err)  if err
-
     # Continue
     return fn()
 
@@ -70,82 +66,16 @@ actions =
         pathUtil.join(path,  '*out')
         pathUtil.join(path,  '*log')
       )
-    # rm
     spawn('rm', args, {stdio:'inherit', cwd:APP_DIR}).on('close', safe next)
-
-  install: (opts,next) ->
-    (next = opts; opts = {})  unless next?
-    step1 = ->
-      # npm install (for app)
-      spawn(NPM, ['install'], {stdio:'inherit', cwd:APP_DIR}).on('close', safe next, step2)
-    step2 = ->
-      fsUtil.exists TEST_DIR, (exists) ->
-        return next()  unless exists
-        # npm install (for test)
-        spawn(NPM, ['install'], {stdio:'inherit', cwd:TEST_DIR}).on('close', safe next)
-    step1()
-
-  compile: (opts,next) ->
-    (next = opts; opts = {})  unless next?
-    # cake install
-    actions.install opts, safe next, ->
-      # coffee compile
-      spawn(COFFEE, ['-co', OUT_DIR, SRC_DIR], {stdio:'inherit', cwd:APP_DIR}).on('close', safe next)
-
-  watch: (opts,next) ->
-    (next = opts; opts = {})  unless next?
-    # cake install
-    actions.install opts, safe next, ->
-      # coffee watch
-      spawn(COFFEE, ['-wco', OUT_DIR, SRC_DIR], {stdio:'inherit', cwd:APP_DIR}).on('close', safe next)
 
   test: (opts,next) ->
     (next = opts; opts = {})  unless next?
-    # cake compile
-    actions.compile opts, safe next, ->
-      # npm test
-      spawn(NPM, ['test'], {stdio:'inherit', cwd:APP_DIR}).on('close', safe next)
-
-  docs: (opts, next) ->
-    (next = opts; opts = {})  unless next?
-    # docco compile
-    fsUtil.exists DOCCO, (exists) ->
-      exec("#{DOCCO} -o #{DOCS_DIR} #{DOCS_INPUT}", {stdio:'inherit', cwd:APP_DIR}, safe next)
-
-  projectz: (opts, next) ->
-    # project compile
-    fsUtil.exists PROJECTZ, (exists) ->
-      spawn(PROJECTZ, ['compile'], {stdio:'inherit', cwd:APP_DIR}).on('close', safe next)
-
-  prepublish: (opts,next) ->
-    (next = opts; opts = {})  unless next?
-    actions.docs opts, save next ->
-      step1 = ->
-        # cake compile
-        actions.compile(opts, safe next, step2)
-      step2 = ->
-        # project compile
-        actions.projectz(opts, safe next, step3)
-      step3 = ->
-        # docco compile
-        actions.docs(opts, safe next, step4)
-      step4 = ->
-        # npm test
-        actions.test(opts, safe next)
-      step1()
-
-  publish: (opts,next) ->
-    (next = opts; opts = {})  unless next?
-    # cake prepublish
-    actions.prepublish opts, safe next, ->
-      # npm publish
-      spawn(NPM, ['publish'], {stdio:'inherit', cwd:APP_DIR}).on 'close', safe next, ->
-        # git tag
-        spawn(GIT, ['tag', 'v'+PACKAGE_DATA.version, '-a'], {stdio:'inherit', cwd:APP_DIR}).on 'close', safe next, ->
-          # git push origin master
-          spawn(GIT, ['push', 'origin', 'master'], {stdio:'inherit', cwd:APP_DIR}).on 'close', safe next, ->
-            # git push tags
-            spawn(GIT, ['push', 'origin', '--tags'], {stdio:'inherit', cwd:APP_DIR}).on('close', safe next)
+    args = ['--compilers', 'coffee:coffee-script',
+            '--require', 'test/test_helper.coffee',
+            '--colors']
+    process.env["NODE_ENV"] = "test"
+    spawn(MOCHA, args, {stdio:'inherit', cwd:APP_DIR, env: process.env})
+      .on('close', safe next)
 
   server: (opts, next) ->
     (next = opts; opts = {}) unless next?
@@ -157,14 +87,7 @@ actions =
 
 commands =
   clean:       'clean up instance'
-  install:     'install dependencies'
-  compile:     'compile our files (runs install)'
-  watch:       'compile our files initially, and again for each change (runs install)'
   test:        'run our tests (runs compile)'
-  docs:        'create docs using docco'
-  projectz:    'generate the readme using projectz'
-  prepublish:  'prepare our package for publishing'
-  publish:     'publish our package (runs prepublish)'
   server:      'start the http server'
 
 Object.keys(commands).forEach (key) ->
