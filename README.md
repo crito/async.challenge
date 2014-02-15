@@ -1,43 +1,9 @@
+# Usage
 
-<!-- TITLE/ -->
+    npm install
+    npm test
+    npm start
 
-<!-- /TITLE -->
-
-
-<!-- BADGES/ -->
-
-<!-- /BADGES -->
-
-
-<!-- DESCRIPTION/ -->
-
-<!-- /DESCRIPTION -->
-
-
-<!-- INSTALL/ -->
-
-<!-- /INSTALL -->
-
-## Usage
-
-
-<!-- HISTORY/ -->
-
-<!-- /HISTORY -->
-
-
-<!-- CONTRIBUTE/ -->
-
-<!-- /CONTRIBUTE -->
-
-
-<!-- BACKERS/ -->
-
-<!-- /BACKERS -->
-
-
-<!-- LICENSE/ -->
-
-<!-- /LICENSE -->
+Open the browser on `http://localhost:5000`
 
 
