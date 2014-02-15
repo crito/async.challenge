@@ -71,8 +71,10 @@ actions =
   test: (opts,next) ->
     (next = opts; opts = {})  unless next?
     args = ['--compilers', 'coffee:coffee-script',
+            '--require', 'coffee-script',
             '--require', 'test/test_helper.coffee',
-            '--colors']
+            '--colors',
+            '--recursive']
     process.env["NODE_ENV"] = "test"
     spawn(MOCHA, args, {stdio:'inherit', cwd:APP_DIR, env: process.env})
       .on('close', safe next)
