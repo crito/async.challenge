@@ -27,6 +27,16 @@ app.configure 'development', ->
 app.configure 'staging', ->
 app.configure 'development', ->
 
+docpadInstanceConfiguration =
+  serverExpress: app
+  serverHttp: server
+  middlewareStandard: false
+
+docpadInstance = require('docpad').createInstance(docpadInstanceConfiguration, (err) ->
+  if err then return console.log(err.stack)
+  docpadInstance.action('generate server watch', (err) ->
+    if (err) then return console.log(err.stack)))
+      
 # Set up our routes
 require('./routes')(app)
 

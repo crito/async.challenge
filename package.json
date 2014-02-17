@@ -21,15 +21,27 @@
   },
   "homepage": "https://github.com/crito/unlockyourbrain",
   "dependencies": {
+    "docpad": "~6.63.3",
+    "docpad-plugin-coffeescript": "~2.3.0",
+    "docpad-plugin-marked": "~2.2.0",
+    "docpad-plugin-partials": "~2.8.1",
+    "docpad-plugin-stylus": "~2.5.0",
+    "docpad-plugin-text": "~2.3.2",
+    "docpad-plugin-coffeekup": "~2.2.0",
     "coffee-script": "~1.6.3",
     "node-config": "0.0.2",
-    "express": "~3.4.8"
+    "express": "~3.4.8",
+    "docpad-plugin-browserifybundler": "~2.0.3",
+    "miniview": "~1.2.0",
+    "pointers": "~1.1.3",
+    "q": "~1.0.0"
   },
   "devDependencies": {
     "expect.js": "~0.2.0",
     "mocha": "~1.17.1",
     "sinon": "~1.8.2",
-    "supertest": "~0.9.0"
+    "supertest": "~0.9.0",
+    "jsdom": "~0.10.1"
   },
   "maintainers": [
     "Christo Buschek <crito@cryptodrunks.net> (https://crito.github.io)"
